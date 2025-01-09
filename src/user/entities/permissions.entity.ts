@@ -1,0 +1,19 @@
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
+export class permissions {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({
+    length: 20,
+    comment: '权限编码',
+  })
+  code: string;
+
+  @Column({
+    length: 100,
+    comment: '权限描述',
+  })
+  desc: string;
+}
