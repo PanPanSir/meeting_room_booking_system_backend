@@ -1,6 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Role } from './role.entity';
 
-@Entity()
+@Entity({
+  name: 'users',
+})
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,8 +31,9 @@ export class User {
   @Column({
     length: 50,
     comment: '昵称',
+    name: 'nick_name',
   })
-  nick_name: string;
+  nickName: string;
 
   @Column({
     length: 50,
@@ -33,31 +45,33 @@ export class User {
     length: 100,
     comment: '头像',
   })
-  head_pic: string;
+  headPic: string;
 
   @Column({
     length: 20,
     comment: '手机号',
   })
-  phone_number: string;
+  phoneNumber: string;
 
   @Column({
     comment: '是否冻结',
   })
-  is_frozen: boolean;
+  isFrozen: boolean;
 
   @Column({
     comment: '是否为管理员',
   })
-  is_Admin: boolean;
+  isAdmin: boolean;
 
-  @Column({
-    comment: '创建时间',
-  })
+  @CreateDateColumn()
   createTime: Date;
 
-  @Column({
-    comment: '更新时间',
-  })
+  @UpdateDateColumn()
   updateTime: Date;
+
+  @ManyToMany(() => Role)
+  @JoinTable({
+    name: 'user_role',
+  })
+  roles: Role[];
 }
