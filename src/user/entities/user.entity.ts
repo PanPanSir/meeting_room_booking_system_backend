@@ -44,22 +44,26 @@ export class User {
   @Column({
     length: 100,
     comment: '头像',
+    nullable: true,
   })
   headPic: string;
 
   @Column({
     length: 20,
     comment: '手机号',
+    nullable: true,
   })
   phoneNumber: string;
 
   @Column({
     comment: '是否冻结',
+    nullable: true,
   })
   isFrozen: boolean;
 
   @Column({
     comment: '是否为管理员',
+    default: false,
   })
   isAdmin: boolean;
 
