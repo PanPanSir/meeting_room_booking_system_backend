@@ -15,7 +15,12 @@ import { EmailService } from 'src/email/email.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { requireLoginMeta } from 'src/constants';
+import {
+  RequireLogin,
+  requirePermissions,
+  UserInfo,
+} from 'src/custom.decorator';
+import { userInfo } from 'os';
 
 @Controller('user')
 export class UserController {
@@ -149,7 +154,7 @@ export class UserController {
     }
   }
 
-  @SetMetadata(requireLoginMeta, true)
+  @RequireLogin()
   @Get('admin/refresh')
   async adminRefreshToken(@Query('refreshToken') refreshToken: string) {
     try {
@@ -188,5 +193,14 @@ export class UserController {
     } catch (error) {
       throw new UnauthorizedException('token 已失效，请重新登录');
     }
+  }
+  @Get('aaa')
+  @RequireLogin()
+  @requirePermissions(['ddd'])
+  aaaa(@UserInfo('username') username: string, @UserInfo() userInfo) {
+    // !!!!!!!!从guard中获取中间过程值的user info
+    console.log('userInfo: !!!!!!!!', userInfo);
+    console.log('username: !!!!!!!!', username);
+    return 'aaa';
   }
 }

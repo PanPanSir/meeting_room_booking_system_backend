@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { Permission } from './user/entities/permission.entity';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { requireLoginMeta } from './constants';
+import { requireLoginMeta } from './custom.decorator';
 
 interface JwtUserData {
   userId: number;
