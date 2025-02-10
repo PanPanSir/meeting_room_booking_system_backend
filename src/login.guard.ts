@@ -46,7 +46,7 @@ export class LoginGuard implements CanActivate {
     if (!authorization) throw new UnauthorizedException('用户未登录');
 
     try {
-      const token = authorization.split(' ')[0];
+      const token = authorization.split(' ')[1];
       const data = this.jwtService.verify(token);
       const userInfo = {
         userId: data.userId,
