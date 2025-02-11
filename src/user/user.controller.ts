@@ -7,6 +7,7 @@ import {
   Inject,
   UnauthorizedException,
   SetMetadata,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -24,6 +25,7 @@ import { userInfo } from 'os';
 import { UserDetailVo } from './vo/user-detail.vo';
 import { UpdateUserPasswordDto } from './dto/update-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { generateParseIntPipe } from 'src/utils';
 
 @Controller('user')
 export class UserController {
@@ -265,6 +267,31 @@ export class UserController {
       html: `<p>你的验证码是 ${code}</p>`,
     });
     return '验证码发送成功';
+  }
+
+  @Get('freeze')
+  async freeze(@Query('id') userId: number) {
+    await this.userService.freezeUserById(userId);
+    return '用户冻结成功';
+  }
+
+  @Get('list')
+  async list(
+    @Query('pageNo', new DefaultValuePipe(1), generateParseIntPipe('pageNo'))
+    pageNo: number,
+    @Query('pageSize', new DefaultValuePipe(1), generateParseIntPipe('pageNo'))
+    pageSize: number,
+    @Query('username') username: string,
+    @Query('nickName') nickName: string,
+    @Query('email') email: string,
+  ) {
+    return await this.userService.findUserByPage(
+      pageNo,
+      pageSize,
+      username,
+      nickName,
+      email,
+    );
   }
 
   @Get('aaa')
