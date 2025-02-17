@@ -60,6 +60,9 @@ export class UserService {
     user.email = md5(registerUser.email);
     user.nickName = registerUser.nickName;
     try {
+      //  确定是 insert 的时候 用 insert 比用 save 更好，能够批量插入数据。
+
+      // 同理，确定是 update 的时候，也不要用 save，因为它会先 select 一次，再确定是 udpate 还是 insert。
       await this.userRepository.save(user);
       return '注册成功';
     } catch (error) {
@@ -102,6 +105,9 @@ export class UserService {
     user1.roles = [role1];
     user2.roles = [role2];
 
+    //  确定是 insert 的时候 用 insert 比用 save 更好，能够批量插入数据。
+
+    // 同理，确定是 update 的时候，也不要用 save，因为它会先 select 一次，再确定是 udpate 还是 insert。
     await this.permissionsRepository.save([permission1, permission2]);
     await this.roleRepository.save([role1, role2]);
     await this.userRepository.save([user1, user2]);
@@ -158,6 +164,7 @@ export class UserService {
     return {
       id: user.id,
       username: user.username,
+      email: user.email,
       isAdmin: user.isAdmin,
       roles: user.roles.map((item) => item.name),
       permissions: user.roles.reduce((arr, item) => {
@@ -199,6 +206,9 @@ export class UserService {
     foundUser.password = md5(passwordDto.password);
 
     try {
+      //  确定是 insert 的时候 用 insert 比用 save 更好，能够批量插入数据。
+
+      // 同理，确定是 update 的时候，也不要用 save，因为它会先 select 一次，再确定是 udpate 还是 insert。
       await this.userRepository.save(foundUser);
       return '密码修改成功';
     } catch (error) {
@@ -233,6 +243,9 @@ export class UserService {
     }
 
     try {
+      //  确定是 insert 的时候 用 insert 比用 save 更好，能够批量插入数据。
+
+      // 同理，确定是 update 的时候，也不要用 save，因为它会先 select 一次，再确定是 udpate 还是 insert。
       await this.userRepository.save(foundUser);
       return '用户信息修改成功';
     } catch (error) {
@@ -247,6 +260,9 @@ export class UserService {
       },
     });
     foundUser.isFrozen = true;
+    //  确定是 insert 的时候 用 insert 比用 save 更好，能够批量插入数据。
+
+    // 同理，确定是 update 的时候，也不要用 save，因为它会先 select 一次，再确定是 udpate 还是 insert。
     await this.userRepository.save(foundUser);
   }
   async findUserByPage(

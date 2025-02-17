@@ -51,6 +51,7 @@ export class LoginGuard implements CanActivate {
       const userInfo = {
         userId: data.userId,
         username: data.username,
+        email: data.email,
         roles: data.roles,
         permissions: data.permissions,
       };
