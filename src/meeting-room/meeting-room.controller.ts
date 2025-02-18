@@ -13,6 +13,7 @@ import { MeetingRoomService } from './meeting-room.service';
 import { generateParseIntPipe } from 'src/utils';
 import { CreateMeetingRoomDto } from './dto/create-meeting-room.dto';
 import { UpdateMeetingRoomDto } from './dto/update-meeting-room.dto';
+import { RequireLogin } from 'src/custom.decorator';
 
 @Controller('meeting-room')
 export class MeetingRoomController {
@@ -60,6 +61,8 @@ export class MeetingRoomController {
   async findById(@Param('id') id: number) {
     return await this.meetingRoomService.findById(id);
   }
+
+  @RequireLogin()
   @Delete(':id')
   async deleteById(@Param('id') id: number) {
     return await this.meetingRoomService.deleteById(id);
