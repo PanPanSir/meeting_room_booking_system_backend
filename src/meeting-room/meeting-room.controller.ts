@@ -48,22 +48,25 @@ export class MeetingRoomController {
   }
 
   @Post('create')
+  @RequireLogin()
   async create(@Body() meetingRoom: CreateMeetingRoomDto) {
     await this.meetingRoomService.create(meetingRoom);
     return '新增成功'; // post代表新增，返回的 code 为201
   }
   @Put('update')
+  @RequireLogin()
   async update(@Body() meetingRoom: UpdateMeetingRoomDto) {
     await this.meetingRoomService.update(meetingRoom);
     return '更新成功'; // Put代表部分更新，返回的 code 为200
   }
   @Get(':id')
+  @RequireLogin()
   async findById(@Param('id') id: number) {
     return await this.meetingRoomService.findById(id);
   }
 
-  @RequireLogin()
   @Delete(':id')
+  @RequireLogin()
   async deleteById(@Param('id') id: number) {
     return await this.meetingRoomService.deleteById(id);
   }

@@ -309,6 +309,7 @@ export class UserController {
   }
 
   @Post('upload')
+  @RequireLogin()
   @UseInterceptors(
     FileInterceptor('file', {
       // dest: 'uploads', 和storage的destination功能重复了，所以可以注释掉
