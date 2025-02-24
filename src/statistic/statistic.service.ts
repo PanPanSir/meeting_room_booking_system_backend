@@ -8,13 +8,13 @@ import { EntityManager } from 'typeorm';
 @Injectable()
 export class StatisticService {
   @InjectEntityManager()
-  private entityManger: EntityManager;
+  private entityManager: EntityManager;
 
   async userBookingCount(startTime: string, endTime: string) {
-    await this.entityManger
+    const res = await this.entityManager
       .createQueryBuilder(Booking, 'b')
-      .select('u.id', '用户id')
-      .addSelect('u.username', '用户名')
+      .select('u.id', 'userId')
+      .addSelect('u.username', 'username')
       .leftJoin(User, 'u', 'b.user_booking = u.id')
       .addSelect('count(1)', 'bookingCount')
       .where('b.startTime between :time1 and :time2', {
@@ -23,19 +23,26 @@ export class StatisticService {
       })
       .addGroupBy('b.user_booking')
       .getRawMany();
+    // [
+    // 	{ userId: 8, username: '1223', bookingCount: '1' },
+    // ]
+    return res;
   }
 
   async meetingRoomUsedCount(startTime: string, endTime: string) {
-    await this.entityManger
+    const res = await this.entityManager
       .createQueryBuilder(Booking, 'b')
-      .select('mr.id', '会议室id')
-      .leftJoin(MeetingRoom, 'mr', 'mr.id = b.roomId')
-      .addSelect('count(1)', 'bookingCount')
+      .select('m.id', 'meetingRoomId')
+      .addSelect('m.name', 'meetingRoomName')
+      .leftJoin(MeetingRoom, 'm', 'b.roomId = m.id')
+      .addSelect('count(1)', 'usedCount')
       .where('b.startTime between :time1 and :time2', {
         time1: startTime,
         time2: endTime,
       })
-      .addGroupBy('mr.id')
+      .addGroupBy('b.roomId')
       .getRawMany();
+    // { meetingRoomId: 1, meetingRoomName: '木星', usedCount: '1' },
+    return res;
   }
 }
